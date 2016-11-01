@@ -3596,13 +3596,13 @@ begin
                  TCLPID(1408):Begin
                  Player.Buffer.BIn:='';
                  With Player.Buffer do Begin
-                   MySQL.SetQuery('INSERT INTO characters(ID,CHARID)VALUES(:ID,11)');
-                   MySQL.AddParameter('ID',AnsiString(IntToStr(Player.AccInfo.ID)));
+                   //MySQL.SetQuery('INSERT INTO characters(ID,CHARID)VALUES(:ID,11)');
+                   //MySQL.AddParameter('ID',AnsiString(IntToStr(Player.AccInfo.ID)));
                    //MySQL.AddParameter('CHARID',AnsiString(CHARID));
-                   MySQL.Run(1);
+                   //MySQL.Run(1);
                    Write(Prefix);
                    Write(Dword(Count));
-                   WriteCw(Word(1409));
+                   WriteCw(Word(SVPID_NEWCHAR));
                    Write(#$00#$00#$32#$00#$00#$00#$00#$00#$00#$00#$00#$00#$00#$00#$00#$00#$00#$00#$F7#$AC#$04#$CF#$76#$2B#$1D#$4F#$8A#$C0#$7C#$50#$53#$A4#$F2#$02#$BB#$3A#$7E#$8C#$FE#$17#$A9#$5A#$C7#$95#$A3#$86#$F3#$48#$C0#$15#$BA#$8A);
                    FixSize;
                    Encrypt(GenerateIV(0),Random($FF));
@@ -3651,9 +3651,21 @@ begin
                     WriteCW(Word(SVPID_CHANNEL_LIST));
                     FixSize;
                     Encrypt(GenerateIV(0),Random($FF));
-                    ClearPacket()
+                    ClearPacket();
                     End;
                     Player.Send;
+                   End;
+                   TCLPID(1555):Begin
+                     Player.Buffer.BIn:='';
+                     with Player.Buffer do Begin
+                       Write(prefix);
+                       Write(Dword(Count));
+                       Write(#$2A#$00#$E2#$E7#$08#$00#$00#$00#$42#$42#$42#$42#$42#$42#$42#$42#$AC#$DD#$61#$35#$98#$88#$A1#$01#$3D#$61#$94#$54#$F2#$90#$B3#$B3#$11#$72#$55#$54#$B5#$46#$CF#$5A#$BA#$E0);
+                       FixSize;
+                       Encrypt(GenerateIV(0),Random($FF));
+                       ClearPacket();
+                   End;
+                   Player.Send;
                    End;
                 TCLPID(16): Lobby.SendRooms(Player);
                 TCLPID(20): Lobby.EnterRoom(Player);
